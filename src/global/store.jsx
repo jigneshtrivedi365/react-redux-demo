@@ -42,9 +42,3 @@ console.log("Initial Store  :", store.getState());
 
 store.dispatch(addTask("Hello world"))
 store.dispatch(addTask("Buy now technical code"))
-
-console.log("store after dispacth Add : ",store.getState());
-
-store.dispatch(delTask(1))
-
-console.log("store after dispacth Dele : ",store.getState());
