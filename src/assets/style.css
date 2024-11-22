@@ -12,8 +12,8 @@ body {
   }
   
   .todo-app {
-    width: 100%;
-    max-width: 400px;
+    width: 470px;
+    max-width: 600px;
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -31,9 +31,13 @@ body {
     margin: 0;
     font-size: 1.5rem;
   }
-  
+
+  /* form{
+    width: 100%;
+  }
+   */
   .todo-input {
-    width: 90%;
+    width: 74%;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
@@ -113,3 +117,12 @@ body {
     background: #38a169;
   }
   
+  .header-body {
+    display: flex;
+    gap: 7px;
+    align-items: self-end;
+  }
+
+  .btn-add-task {
+    height: 39px;
+  }

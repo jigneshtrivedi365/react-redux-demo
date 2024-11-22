@@ -1,4 +1,7 @@
-import {createStore} from 'redux'
+import { composeWithDevTools } from '@redux-devtools/extension';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import {applyMiddleware, createStore} from 'redux'
+import { thunk } from 'redux-thunk';
 
 /* eslint-disable no-case-declarations */
 const initialState = { 
@@ -7,6 +10,9 @@ const initialState = {
 // constant declaretion 
 const ADD_TASK = "task/add";
 const DEL_TASK = "task/delete";
+const FETCH_TASK = "task/fetch";
+
+/* Make reducer in treditional method */
 
 const taskReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -17,28 +23,84 @@ const taskReducer = (state = initialState, action) => {
             }
 
         case DEL_TASK:
-            const updateTask = state.task.filter((task,index) => {
+            const updateTask = state.task.filter((_,index) => {
                 return index !== action.payload;
             });
             return {
                 ...state,
-                task: [...state.task, updateTask],
+                task: updateTask,
             }
+
+        case FETCH_TASK:
+            return {
+                ...state,
+                task: [...state.task,... action.payload],
+            }
+
         default:
             return state;
     }
 };
 
-const addTask = (data) => {
+/* Make action creator in treditional method */
+
+export const addTask = (data) => {
     return {type:ADD_TASK,payload:data};
 }
 
-const delTask = (id) => {
+export const delTask = (id) => {
     return {type:DEL_TASK,payload:id}; 
 }
 
-export const store = createStore(taskReducer)
-console.log("Initial Store  :", store.getState());
+export const fetchTask = () => {
+    return async (dispatch) => {
+        try {
+            const res = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=3")
+            const task = await res.json()
+            console.log(task);
+            dispatch({type:FETCH_TASK,payload:task.map((curTask) => curTask.title)})
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+}
+
+/* Treditional Practise Method */
+export const store = createStore(
+    taskReducer,
+    composeWithDevTools( applyMiddleware(thunk) )
+)
+
+
+/* Make a reducer in using by toolkit*/
+
+// const taskReducer = createSlice({
+//     name:"task",
+//     initialState,
+//     reducers:{
+//         addTask(state,action){
+//             state.task.push(action.payload)
+//         },
+//         delTask(state,action){
+//             state.task = state.task.filter(
+//                 (curTask, index) => index !== action.payload
+//             )
+//         }
+//     }
+// })
+
+// const {addTask,delTask}  = taskReducer.actions;
+
+/* create store using tool kit*/
+// export const store = configureStore({
+//     reducer:{
+//         taskReducer
+//     }
+// })
+
+
+
 
 store.dispatch(addTask("Hello world"))
 store.dispatch(addTask("Buy now technical code"))
