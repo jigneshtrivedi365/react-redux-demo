@@ -5,8 +5,7 @@ import { addTask, delTask, fetchTask } from "../global/store";
 export const Todo = () => {
 
     const state = useSelector((state) => state)
-    // const tasks = state.taskReducer.task;
-    const tasks = state.task;
+    const tasks = state.taskReducer.task;
     const dispatch = useDispatch();
     const [taskData,setTask] = useState(""); 
     const handleFormSubmit = (e) => {
@@ -43,7 +42,7 @@ export const Todo = () => {
                 </header>
                 <ul className="todo-list">
                     {
-                        tasks.map((curTask, index) => {
+                        tasks?.map((curTask, index) => {
                             return <li key={index} className="todo-item">
                                 <span>{curTask}</span>
                                 <button className="delete-btn" onClick={() => handleDeleteTask(index)}>Delete</button>

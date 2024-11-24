@@ -14,93 +14,88 @@ const FETCH_TASK = "task/fetch";
 
 /* Make reducer in treditional method */
 
-const taskReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case ADD_TASK:
-            return {
-                ...state,
-                task: [...state.task,action.payload],
-            }
+// const taskReducer = (state = initialState, action) => {
+//     switch (action.type) {
+//         case ADD_TASK:
+//             return {
+//                 ...state,
+//                 task: [...state.task,action.payload],
+//             }
 
-        case DEL_TASK:
-            const updateTask = state.task.filter((_,index) => {
-                return index !== action.payload;
-            });
-            return {
-                ...state,
-                task: updateTask,
-            }
+//         case DEL_TASK:
+//             const updateTask = state.task.filter((_,index) => {
+//                 return index !== action.payload;
+//             });
+//             return {
+//                 ...state,
+//                 task: updateTask,
+//             }
 
-        case FETCH_TASK:
-            return {
-                ...state,
-                task: [...state.task,... action.payload],
-            }
+//         case FETCH_TASK:
+//             return {
+//                 ...state,
+//                 task: [...state.task,... action.payload],
+//             }
 
-        default:
-            return state;
-    }
-};
+//         default:
+//             return state;
+//     }
+// };
 
 /* Make action creator in treditional method */
 
-export const addTask = (data) => {
-    return {type:ADD_TASK,payload:data};
-}
+// export const addTask = (data) => {
+//     return {type:ADD_TASK,payload:data};
+// }
 
-export const delTask = (id) => {
-    return {type:DEL_TASK,payload:id}; 
-}
+// export const delTask = (id) => {
+//     return {type:DEL_TASK,payload:id}; 
+// }
 
 export const fetchTask = () => {
     return async (dispatch) => {
         try {
             const res = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=3")
             const task = await res.json()
-            console.log(task);
             dispatch({type:FETCH_TASK,payload:task.map((curTask) => curTask.title)})
         } catch (error) {
             console.log(error);
-            
         }
     }
 }
 
 /* Treditional Practise Method */
-export const store = createStore(
-    taskReducer,
-    composeWithDevTools( applyMiddleware(thunk) )
-)
+// export const store = createStore(
+//     taskReducer,
+//     composeWithDevTools( applyMiddleware(thunk) )
+// )
 
 
 /* Make a reducer in using by toolkit*/
 
-// const taskReducer = createSlice({
-//     name:"task",
-//     initialState,
-//     reducers:{
-//         addTask(state,action){
-//             state.task.push(action.payload)
-//         },
-//         delTask(state,action){
-//             state.task = state.task.filter(
-//                 (curTask, index) => index !== action.payload
-//             )
-//         }
-//     }
-// })
+const taskReducer = createSlice({
+    name:"task",
+    initialState,
+    reducers:{
+        addTask(state,action){
+            state.task.push(action.payload)
+        },
+        delTask(state,action){
+            state.task = state.task.filter(
+                (curTask, index) => index !== action.payload
+            )
+        }
+    }
+})
 
-// const {addTask,delTask}  = taskReducer.actions;
+export const {addTask,delTask}  = taskReducer.actions;
 
 /* create store using tool kit*/
-// export const store = configureStore({
-//     reducer:{
-//         taskReducer
-//     }
-// })
+export const store = configureStore({
+    reducer:{
+        taskReducer: taskReducer.reducer
+    }
+})
 
-
-
-
-store.dispatch(addTask("Hello world"))
-store.dispatch(addTask("Buy now technical code"))
+console.log(store.dispatch(addTask("Buy Mango")))
+console.log(store.getState())
