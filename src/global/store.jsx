@@ -84,11 +84,18 @@ const taskReducer = createSlice({
             state.task = state.task.filter(
                 (curTask, index) => index !== action.payload
             )
+        },
+        clearAllTask(state,action){
+            console.log(state.task);
+            return {
+                ...state,
+                task: [],
+            }
         }
     }
 })
 
-export const {addTask,delTask}  = taskReducer.actions;
+export const {addTask,delTask,clearAllTask}  = taskReducer.actions;
 
 /* create store using tool kit*/
 export const store = configureStore({

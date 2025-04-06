@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../assets/style.css"
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, delTask, fetchTask } from "../global/store";
+import { addTask, clearAllTask, delTask, fetchTask } from "../global/store";
 export const Todo = () => {
 
     const state = useSelector((state) => state)
@@ -19,6 +19,9 @@ export const Todo = () => {
 
     const handleFetchTask = () => {
         dispatch(fetchTask())
+    }
+    const clearAllTaskHandler = () => {
+        dispatch(clearAllTask())
     }
 
     return (
@@ -38,7 +41,7 @@ export const Todo = () => {
                         </div>
                     </form>
                     <br/>
-                    <button className="btn-fetch" onClick={handleFetchTask}>Fetch Task</button>
+                    {/* <button className="btn-fetch" onClick={handleFetchTask}>Fetch Task</button> */}
                 </header>
                 <ul className="todo-list">
                     {
@@ -51,8 +54,7 @@ export const Todo = () => {
                     }
                 </ul>
                 <footer className="todo-footer">
-                    <span>2 tasks remaining</span>
-                    <button className="clear-completed">Clear Completed</button>
+                    <button className="clear-completed" onClick={()=>clearAllTaskHandler()}>Clear Completed</button>
                 </footer>
             </div>
         </>
